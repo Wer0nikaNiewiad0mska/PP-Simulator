@@ -5,13 +5,14 @@ using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using static Simulator.Directions;
 
 namespace Simulator;
 
 internal class Creature
 {
-    private string? name = "Unknown";
-    public string? Name
+    private string name = "Unknown";
+    public string Name
     {
         get => name;
         init
@@ -53,6 +54,25 @@ internal class Creature
         {
             level++;
         }
+    }
+
+    public void Go(Direction direction)
+    {
+        Console.WriteLine($"{Name} goes {direction.ToString().ToLower()}.");
+    }
+
+    public void Go(Direction[] directions)
+    {
+        foreach (Direction direction in directions)
+        {
+            Go(direction);
+        }
+    }
+
+    public void Go(string input)
+    {
+        Direction[] directions = DirectionParser.Parse(input);
+        Go(directions);
     }
 
     public Creature(string name, int level = 1)
