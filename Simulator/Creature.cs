@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,7 +10,7 @@ using static Simulator.Directions;
 
 namespace Simulator;
 
-internal class Creature
+public abstract class Creature
 {
     private string name = "Unknown";
     public string Name
@@ -83,7 +84,10 @@ internal class Creature
 
     public Creature() { }
 
-    public void SayHi() => Console.WriteLine($"Hi, I'm {name}, my level is {level}.");
+    public abstract void SayHi();
     public string Info => $"{Name} - {Level}";
+
+    public abstract int Power {  get; }
+
 }
 
