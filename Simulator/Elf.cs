@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace Simulator;
 
 public class Elf : Creature
@@ -12,21 +7,7 @@ public class Elf : Creature
     public int Agility 
     {
         get => agility;
-        init
-        {
-            if (value < 0)
-            {
-                agility = 0;
-            }
-            else if (value > 10)
-            {
-                agility = 10;
-            }
-            else
-            {
-                agility = value;
-            }
-        }
+        init => agility = Validator.Limiter(value, 0, 10);
     }
     private int count = 0;
     public void Sing()
@@ -61,5 +42,9 @@ public class Elf : Creature
         {
             return 8 * Level + 2 * Agility;
         }
+    }
+    public override string Info
+    {
+        get { return $"{Name} [{Level}] [{Agility}]"; }
     }
 }

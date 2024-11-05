@@ -1,32 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace Simulator;
 
 public class Orc : Creature
 {
     private int rage;
-    public int Rage 
+    public int Rage
     {
         get => rage;
-        init
-        {
-            if (value < 0)
-            {
-                rage = 0;
-            }
-            else if (value > 10)
-            {
-                rage = 10;
-            }
-            else
-            {
-                rage = value;
-            }
-        }
+        init => rage = Validator.Limiter(value, 0, 10);
     }
     private int count = 0;
     public void Hunt()
@@ -60,5 +41,9 @@ public class Orc : Creature
         {
             return 7 * Level + 3 * Rage;
         }
+    }
+    public override string Info
+    {
+        get { return $"{Name} [{Level}] [{Rage}]"; }
     }
 }
