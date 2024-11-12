@@ -1,4 +1,5 @@
 ﻿
+using Simulator.Maps;
 using static Simulator.Directions;
 
 namespace Simulator;
@@ -9,6 +10,7 @@ internal class Program
     {
         Console.WriteLine("Starting Simulator!\n");
         Lab5a();
+        Lab5b();
     }
    
     static void Lab5a()
@@ -44,5 +46,36 @@ internal class Program
         {
             Console.WriteLine("Error occured: " + ex.Message);
         }
+    }
+
+    static void Lab5b()
+    {
+        SmallSquareMap map = new SmallSquareMap(6);
+
+        Point pointInside = new(5, 5);
+        Point pointOutside = new(10, 10);
+        Point pointOnEdge = new(9, 9);
+
+        Console.WriteLine("\nTesting the Exist method:");
+        Console.WriteLine($"Does the point {pointInside} exist on the map? {map.Exist(pointInside)}");
+        Console.WriteLine($"Does the point {pointOutside} exist on the map? {map.Exist(pointOutside)}");
+        Console.WriteLine($"Does the point {pointOnEdge} exist on the map? {map.Exist(pointOnEdge)}");
+        Console.WriteLine();
+
+        Console.WriteLine("Testing the Next method (move right):");
+        Point nextPoint = map.Next(pointInside, Directions.Direction.Right);
+        Console.WriteLine($"New position after moving right from point {pointInside}: {nextPoint}");
+
+        nextPoint = map.Next(pointOutside, Directions.Direction.Up);
+        Console.WriteLine($"New position after moving up from point {pointOutside}: {nextPoint}");
+        Console.WriteLine();
+
+        Console.WriteLine("Testing the NextDiagonal method (move up and right):");
+        Point nextDiagonalPoint = map.NextDiagonal(pointInside, Directions.Direction.Up);
+        Console.WriteLine($"New position after moving diagonally from point {pointInside}: {nextDiagonalPoint}");
+
+        nextDiagonalPoint = map.NextDiagonal(pointOnEdge, Directions.Direction.Up);
+        Console.WriteLine($"New position after moving diagonally from point {pointOnEdge}: {nextDiagonalPoint}");
+        Console.WriteLine();
     }
 }
