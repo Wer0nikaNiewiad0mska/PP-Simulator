@@ -26,13 +26,12 @@ public class Orc : Creature
         }
     }
 
-    public Orc(): base(){}
-    public Orc(string name, int level=1, int rage = 1) : base(name, level)
+    public Orc() : base() { }
+    public Orc(string name, int level = 1, int rage = 1) : base(name, level)
     {
         Rage = rage;
     }
-    public override string Greeting() => ($"Hi, I'm {Name}, my level is {Level}, my rage is {Rage}."
-);
+    public override string Greeting() {return $"Hi, I'm {Name}, my level is {Level}, my rage is {Rage}.";}
     public override int Power
     {
         get

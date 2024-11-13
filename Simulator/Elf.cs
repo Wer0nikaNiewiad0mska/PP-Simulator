@@ -4,7 +4,7 @@ namespace Simulator;
 public class Elf : Creature
 {
     private int agility;
-    public int Agility 
+    public int Agility
     {
         get => agility;
         init => agility = Validator.Limiter(value, 0, 10);
@@ -13,27 +13,26 @@ public class Elf : Creature
     public void Sing()
     {
         count++;
-        if (count%3==0)
+        if (count % 3 == 0)
         {
-            if (!(agility==10))
+            if (!(agility == 10))
             {
                 agility++;
             }
-            else 
+            else
             {
                 agility = 10;
             }
         }
     }
 
-    public Elf(): base(){}
-    public Elf(string name, int level =1, int agility = 1 ): base(name, level)
+    public Elf() : base() { }
+    public Elf(string name, int level = 1, int agility = 1) : base(name, level)
     {
         Agility = agility;
     }
 
-    public override string Greeting() => $"Hi, I'm {Name}, my level is {Level}, my agility is {Agility}."
-);
+    public override string Greeting() { return $"Hi, I'm {Name}, my level is {Level}, my agility is {Agility}."; }
     public override int Power
     {
         get
