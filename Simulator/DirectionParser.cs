@@ -11,7 +11,7 @@ public static class DirectionParser
 {
     public static Direction[] Parse(string input)
     {
-        var directionsKierunki = new HashSet<Direction>();
+        var directionsKierunki = new List<Direction>();
         foreach (char letter in input)
         {
             switch (char.ToUpper(letter))
