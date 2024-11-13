@@ -12,7 +12,6 @@ public class Orc : Creature
     private int count = 0;
     public void Hunt()
     {
-        Console.WriteLine($"{Name} is hunting.");
         count++;
         if (count % 2 == 0)
         {
@@ -32,8 +31,7 @@ public class Orc : Creature
     {
         Rage = rage;
     }
-    public override void SayHi() => Console.WriteLine(
-    $"Hi, I'm {Name}, my level is {Level}, my rage is {Rage}."
+    public override string Greeting() => ($"Hi, I'm {Name}, my level is {Level}, my rage is {Rage}."
 );
     public override int Power
     {
