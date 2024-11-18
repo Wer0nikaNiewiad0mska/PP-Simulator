@@ -3,37 +3,30 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Simulator.Directions;
 
 namespace Simulator.Maps;
 
 public class SmallSquareMap : Map
 {
-    public readonly int Size;
-
-    public SmallSquareMap(int size) => Size = size < 5 || size > 20 ? throw new ArgumentOutOfRangeException("Unacceptable size of the map - it must be between 5 and 20.") : size;
-
-    //Metoda Bounds korzysta z metody Contains z klasy Rectangles do sprawdzenia czy punkt mieści się w obrębie prostokąta
-    private bool Bounds(Point p)
+    private readonly Rectangle _limits;
+    public int Size { get; }
+    public SmallSquareMap(int size)
     {
-        Rectangle mapBounds = new(0, 0, Size - 1, Size - 1);
-        return mapBounds.Contains(p);
+        if (size < 5 || size > 20) throw new ArgumentOutOfRangeException("Given wrong map parameters. Map size must be between 5 and 20.");
+        Size = size;
+        _limits = new Rectangle(0, 0, Size - 1, Size - 1);
     }
-    public override bool Exist(Point p)
+    public override bool Exist(Point p) => _limits.Contains(p);
+    public override Point Next(Point p, Direction d)
     {
-        return Bounds(p);
+        var moved = p.Next(d);
+        return !Exist(moved) ? p : moved;
     }
-
-
-    public override Point Next(Point p, Directions.Direction d)
+    public override Point NextDiagonal(Point p, Direction d)
     {
-        Point nextPoint = p.Next(d);
-        return Bounds(nextPoint) ? nextPoint : p;
-    }
-
-    public override Point NextDiagonal(Point p, Directions.Direction d)
-    {
-        Point nextPoint = p.NextDiagonal(d);
-        return Bounds(nextPoint) ? nextPoint : p;
+        var moved = p.NextDiagonal(d);
+        return !Exist(moved) ? p : moved;
     }
 }
 
