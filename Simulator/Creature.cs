@@ -11,7 +11,6 @@ public abstract class Creature
     {
         Map = map;
         Position = position;
-        Map.Add(this, position);
     }
 
     private string name = "Unknown";

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -8,7 +10,7 @@ namespace Simulator.Maps;
 
 public abstract class SmallMap : Map
 {
-    private List<Creature>?[,] _fields;
+    List<Creature>?[,] _fields;
 
     protected SmallMap(int sizeX, int sizeY) : base(sizeX, sizeY)
     {
@@ -27,43 +29,28 @@ public abstract class SmallMap : Map
 
     public override void Add(Creature creature, Point p)
     {
-        if (!Exist(p)) throw new ArgumentOutOfRangeException(nameof(p), "Point is out of map bounds.");
-        if (_fields[p.X, p.Y] == null)
-        {
-            _fields[p.X, p.Y] = new List<Creature>();
-        }
         _fields[p.X, p.Y]?.Add(creature);
         creature.InitMapAndPosition(this, p);
     }
 
     public override void Remove(Creature creature, Point p)
     {
-        if (!Exist(p)) throw new ArgumentOutOfRangeException(nameof(p), "Point is out of map bounds.");
         _fields[p.X, p.Y]?.Remove(creature);
-        if (_fields[p.X, p.Y]?.Count == 0)
-        {
-            _fields[p.X, p.Y] = null;
-        }
     }
 
     public override void Move(Creature creature, Point from, Point to)
     {
-        if (!Exist(from) || !Exist(to)) throw new ArgumentOutOfRangeException("Points are out of map bounds.");
-        Remove(creature, from);
-        Add(creature, to);
+        _fields[from.X, from.Y]?.Remove(creature);
+        _fields[to.X, to.Y]?.Add(creature);
     }
 
     public override List<Creature>? At(int x, int y)
     {
-        if (x < 0 || x >= SizeX || y < 0 || y >= SizeY)
-        {
-            return null;
-        }
         return _fields[x, y];
     }
 
     public override List<Creature>? At(Point p)
     {
-        return At(p.X, p.Y);
+        return _fields[p.X, p.Y];
     }
 }
