@@ -28,22 +28,22 @@ public class SmallTorusMap : SmallMap
         if (d == Direction.Up)
         {
             newX = (p.X + 1 + SizeX) % SizeX;
-            newY = (p.Y + 1 + SizeY) % SizeY; 
+            newY = (p.Y + 1 + SizeY) % SizeY;
         }
         else if (d == Direction.Down)
         {
-            newX = (p.X - 1 + SizeX) % SizeX; 
-            newY = (p.Y - 1 + SizeY) % SizeY; 
+            newX = (p.X - 1 + SizeX) % SizeX;
+            newY = (p.Y - 1 + SizeY) % SizeY;
         }
         else if (d == Direction.Left)
         {
-            newX = (p.X - 1 + SizeX) % SizeX; 
-            newY = (p.Y + 1 + SizeY) % SizeY; 
+            newX = (p.X - 1 + SizeX) % SizeX;
+            newY = (p.Y + 1 + SizeY) % SizeY;
         }
         else if (d == Direction.Right)
         {
-            newX = (p.X + 1 + SizeX) % SizeX; 
-            newY = (p.Y - 1 + SizeY) % SizeY; 
+            newX = (p.X + 1 + SizeX) % SizeX;
+            newY = (p.Y - 1 + SizeY) % SizeY;
         }
 
         return new Point(newX, newY);

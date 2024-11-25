@@ -1,9 +1,19 @@
-﻿using static Simulator.Directions;
+﻿using Simulator.Maps;
+using static Simulator.Directions;
 
 namespace Simulator;
 
 public abstract class Creature
 {
+    public Map? Map { get; private set; }
+    public Point Position { get; private set; }
+    public void InitMapAndPosition(Map map, Point position)
+    {
+        Map = map;
+        Position = position;
+        Map.Add(this, position);
+    }
+
     private string name = "Unknown";
     public string Name
     {
@@ -12,8 +22,8 @@ public abstract class Creature
     }
 
     private int level = 1;
-    public int Level 
-    { 
+    public int Level
+    {
         get => level;
         init => level = Validator.Limiter(value, 1, 10);
     }
@@ -26,22 +36,11 @@ public abstract class Creature
         }
     }
 
-    public string Go(Direction direction) => $"{direction.ToString().ToLower()}";
-
-    public List<string> Go(List<Direction> directions)
+    public string Go(Direction direction)
     {
-        List<string> result = new List<string>(directions.Count);
-        for (int i=0; i < directions.Count; i++)
-        {
-            result[i] = Go(directions[i]);
-        }
-        return result;
-    }
+        Map?.Move(this, Position, Map.Next(Position, direction));
 
-    public List<string> Go(string input)
-    {
-        List<Direction> directions = DirectionParser.Parse(input);
-        return  Go(input);
+        return $"{direction.ToString().ToLower()}";
     }
 
     public Creature(string name, int level = 1)
@@ -55,12 +54,10 @@ public abstract class Creature
     public abstract string Greeting();
     public abstract string Info { get; }
 
-    public abstract int Power {  get; }
+    public abstract int Power { get; }
 
     public override string ToString()
     {
         return $"{GetType().Name.ToUpper()}: {Info}";
     }
-
 }
-
