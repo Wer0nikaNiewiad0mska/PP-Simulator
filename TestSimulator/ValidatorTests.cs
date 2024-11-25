@@ -23,7 +23,7 @@ public class ValidatorTests
 
     [Theory]
     [InlineData("Hello", 5, 10, ' ', "Hello")]
-    [InlineData("Hi", 5, 10, ' ', "Hi   ")]
+    [InlineData("abc                            def", 5, 10, '*', "Abc**")]
     [InlineData("This is a very long string", 5, 10, '.', "This is a")]
     [InlineData("Short", 5, 10, '.', "Short")]
     [InlineData("Trim this    ", 5, 10, '_', "Trim this")]
@@ -37,7 +37,7 @@ public class ValidatorTests
 
     [Theory]
     [InlineData("     ", 5, 10, '.', ".....")]
-    [InlineData("         ", 5, 10, '_', "_____")]
+    [InlineData("", 5, 15, '_', "_____")]
     [InlineData("   ", 5, 5, '_', "_____")]
     [InlineData("      ", 5, 5, '#', "#####")]
     [InlineData("       ", 5, 10, '_', "_____")]

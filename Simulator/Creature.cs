@@ -28,19 +28,19 @@ public abstract class Creature
 
     public string Go(Direction direction) => $"{direction.ToString().ToLower()}";
 
-    public string[] Go(Direction[] directions)
+    public List<string> Go(List<Direction> directions)
     {
-        var  result = new string[directions.Length];
-        for (int i=0; i < directions.Length; i++)
+        List<string> result = new List<string>(directions.Count);
+        for (int i=0; i < directions.Count; i++)
         {
             result[i] = Go(directions[i]);
         }
         return result;
     }
 
-    public string[] Go(string input)
+    public List<string> Go(string input)
     {
-        Direction[] directions = DirectionParser.Parse(input);
+        List<Direction> directions = DirectionParser.Parse(input);
         return  Go(input);
     }
 
