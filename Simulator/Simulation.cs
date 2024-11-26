@@ -49,7 +49,15 @@ public class Simulation
     /// <summary>
     /// Lowercase name of direction which will be used in current turn.
     /// </summary>
-    public string CurrentMoveName => DirectionParser.Parse(Moves)[_turnCounter].ToString().ToLower();
+    public string CurrentMoveName
+    {
+        get
+        {
+            var parsedMoves = DirectionParser.Parse(Moves);
+             int validTurnCounter = _turnCounter % parsedMoves.Count;
+            return parsedMoves[validTurnCounter].ToString().ToLower();
+        }
+    }
 
     /// <summary>
     /// Simulation constructor.
@@ -73,7 +81,7 @@ public class Simulation
         {
             Creatures[i].InitMapAndPosition(Map, Positions[i]);
         }
-        Moves = string.Concat(DirectionParser.Parse(moves).Select(d => d.ToString()[0]));
+        Moves = string.Join("", DirectionParser.Parse(moves).Select(d => d.ToString()[0]));
     }
     /// <summary>
     /// Makes one move of current creature in current direction.
@@ -92,7 +100,7 @@ public class Simulation
 
         var move = DirectionParser.Parse(Moves)[_turnCounter];
 
-        Map.Move(CurrentCreature, CurrentCreature.Position, Map.Next(CurrentCreature.Position, move));
+        CurrentCreature.Go(move);
 
         _turnCounter++;
 
@@ -101,4 +109,5 @@ public class Simulation
             Finished = true;
         }
     }
+
 }

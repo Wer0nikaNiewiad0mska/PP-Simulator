@@ -11,6 +11,7 @@ public abstract class Creature
     {
         Map = map;
         Position = position;
+        map.Add(this, position);
     }
 
     private string name = "Unknown";
@@ -38,6 +39,7 @@ public abstract class Creature
     public string Go(Direction direction)
     {
         Map?.Move(this, Position, Map.Next(Position, direction));
+        Position = Map.Next(Position, direction);
 
         return $"{direction.ToString().ToLower()}";
     }
