@@ -45,7 +45,7 @@ public class Simulation
     /// <summary>
     /// IMappable which will be moving current turn.
     /// </summary>
-    public IMappable CurrentMappable => Mappables[_turnCounter % Mappables.Count];
+    public IMappable CurrentMappable => IMappables[_turnCounter % IMappables.Count];
 
     /// <summary>
     /// Lowercase name of direction which will be used in current turn.
@@ -70,19 +70,22 @@ public class Simulation
     public Simulation(Map map, List<IMappable> mappables,
         List<Point> positions, string moves)
     {
-        if (mappables.Count == 0)
-            throw new ArgumentException("IMappables list cannot be empty.");
-        if (mappables.Count != positions.Count)
-            throw new ArgumentException("The number of mappables must match the number of starting positions.");
+        if (mappables == null || mappables.Count == 0) throw new ArgumentException("The list of mappables cannot be empty.", nameof(positions));
+        if (positions == null || positions.Count != mappables.Count) throw new ArgumentException("Number of starting positions must be the same as the number of mappables.", nameof(positions));
+        if (string.IsNullOrEmpty(moves)) throw new ArgumentException("Moves string cannot be null or empty.", nameof(moves));
 
-        Map = map;
+        Map = map ?? throw new ArgumentNullException(nameof(map));
         IMappables = mappables;
         Positions = positions;
+        //Moves = moves.ToLower();
+        Moves = new string(moves.Where(ch => "lrud".Contains(char.ToLower(ch))).ToArray());
+        if (Moves.Length == 0)
+            throw new ArgumentException("Moves string must contain at least one valid move ('l', 'r', 'u', 'd').");
+
         for (int i = 0; i < mappables.Count; i++)
         {
-            mappables[i].InitMapAndPosition(Map, Positions[i]);
+            mappables[i].InitMapAndPosition(map, positions[i]);
         }
-        Moves = string.Join("", DirectionParser.Parse(moves).Select(d => d.ToString()[0]));
     }
     /// <summary>
     /// Makes one move of current mappable in current direction.
