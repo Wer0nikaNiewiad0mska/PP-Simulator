@@ -6,8 +6,8 @@ namespace Simulator;
 
 public class Birds : Animals
 {
+    public override char Symbol => CanFly ? 'B' : 'b';
     public bool CanFly { get; set; } = true;
-    private bool fly;
 
     public override string Info
     {
@@ -17,16 +17,24 @@ public class Birds : Animals
             return $"{Description} ({flyingability}) <{Size}>";
         }
     }
+
     public override void Go(Direction direction)
     {
         if (CanFly)
         {
-            Map?.Move(this, Position, Map.Next(Position, direction));
-            Map?.Move(this, Position, Map.Next(Position, direction));
+            var nextPosition = Map.Next(Position, direction);
+            Map.Move(this, Position, nextPosition); 
+            UpdatePosition(nextPosition);
+
+            nextPosition = Map.Next(Position, direction); 
+            Map.Move(this, Position, nextPosition); 
+            UpdatePosition(nextPosition); 
         }
         else
         {
-            Map?.Move(this, Position, Map.NextDiagonal(Position, direction));
+            var nextPosition = Map.NextDiagonal(Position, direction);
+            Map.Move(this, Position, nextPosition);  
+            UpdatePosition(nextPosition);  
         }
     }
 }

@@ -24,14 +24,22 @@ public class Animals : IMappable
 
     public virtual string Info => $"{Description} <{Size}>";
 
-    public void InitMapAndPosition(Map map, Point p)
+    public void InitMapAndPosition(Map map, Point position)
     {
         Map = map;
-        Position = p;
+        Position = position;
+        map.Add(this, position);
     }
+    public void UpdatePosition(Point newPosition)
+    {
+        Position = newPosition;
+    }
+
     public virtual void Go(Direction direction)
     {
-        Map?.Move(this, Position, Map.Next(Position, direction));
+        Point newPosition = Map?.Next(Position, direction) ?? Position;
+        Map?.Move(this, Position, newPosition);
+        Position = newPosition;
     }
 
     public override string ToString()
