@@ -3,6 +3,7 @@ namespace Simulator;
 
 public class Orc : Creature
 {
+    public override char Symbol { get; } = 'O';
     private int rage;
     public int Rage
     {
@@ -31,7 +32,7 @@ public class Orc : Creature
     {
         Rage = rage;
     }
-    public override string Greeting() {return $"Hi, I'm {Name}, my level is {Level}, my rage is {Rage}.";}
+    public override string Greeting() { return $"Hi, I'm {Name}, my level is {Level}, my rage is {Rage}."; }
     public override int Power
     {
         get

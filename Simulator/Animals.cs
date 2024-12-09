@@ -5,14 +5,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using static Simulator.Directions;
 
 namespace Simulator;
 
 public class Animals : IMappable
 {
+    public virtual char Symbol { get; } = 'A';
     private string description = "Unknown";
-    public required string Description 
-    { 
+    public Map? Map { get; private set; }
+    public Point Position { get; private set; }
+    public required string Description
+    {
         get => description;
         init => description = Validator.Shortener(value, 3, 15, '#');
     }
@@ -20,16 +24,14 @@ public class Animals : IMappable
 
     public virtual string Info => $"{Description} <{Size}>";
 
-    public Point Position => throw new NotImplementedException();
-
-    public void Go(Directions.Direction move)
+    public void InitMapAndPosition(Map map, Point p)
     {
-        throw new NotImplementedException();
+        Map = map;
+        Position = p;
     }
-
-    public void InitMapAndPosition(Map map, Point point)
+    public virtual void Go(Direction direction)
     {
-        throw new NotImplementedException();
+        Map?.Move(this, Position, Map.Next(Position, direction));
     }
 
     public override string ToString()

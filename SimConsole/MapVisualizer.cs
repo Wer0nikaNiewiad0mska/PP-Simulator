@@ -47,8 +47,7 @@ public class MapVisualizer
                 }
                 else if (creatures?.Count == 1)
                 {
-                    char symbol = creatures[0] is Elf ? 'E' : 'O';
-                    Console.Write(symbol);
+                    Console.Write(creatures[0].Symbol);
                 }
                 else
                 {
