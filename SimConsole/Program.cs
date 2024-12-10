@@ -18,10 +18,13 @@ internal class Program
         string moves = "dlrludlldrluuduldurr";
 
         Simulation simulation = new(map, creatures, points, moves);
+        SimulationHistory history = simulation.History;
         MapVisualizer mapVisualizer = new(simulation.Map);
 
         var turn = 1;
         mapVisualizer.Draw();
+        history.GetSnapshot(turn).DisplaySnapshot();
+
 
 
         while (!simulation.Finished)
@@ -35,9 +38,17 @@ internal class Program
 
             Console.WriteLine();
             simulation.Turn();
+            history.AddSnapshot(simulation);
             mapVisualizer.Draw();
+            history.GetSnapshot(turn).DisplaySnapshot();
             turn++;
-
+            if (turn > 20) break;
+        }
+        for (int i = 5; i <= 20; i += 5)
+        {
+            Console.WriteLine($"--- Turn {i} ---");
+            history.GetSnapshot(i).DisplaySnapshot();
+            Console.WriteLine();
         }
     }
 }

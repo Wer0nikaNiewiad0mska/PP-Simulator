@@ -13,6 +13,7 @@ public class Simulation
     /// <summary>
     /// Simulation's map.
     /// </summary>
+    private readonly SimulationHistory _history;
     public Map Map { get; }
     public List<IMappable> IMappables { get; private set; }
 
@@ -60,6 +61,8 @@ public class Simulation
         }
     }
 
+    public IMappable CurrentMove { get; set; }
+
     /// <summary>
     /// Simulation constructor.
     /// Throw errors:
@@ -86,6 +89,9 @@ public class Simulation
         {
             mappables[i].InitMapAndPosition(map, positions[i]);
         }
+
+        _history = new SimulationHistory();
+        _history.AddSnapshot(this);
     }
     /// <summary>
     /// Makes one move of current mappable in current direction.
@@ -108,10 +114,14 @@ public class Simulation
 
         _turnCounter++;
 
+        _history.AddSnapshot(this);
+
         if (_turnCounter >= Moves.Length)
         {
             Finished = true;
         }
+
     }
+    public SimulationHistory History => _history;
 
 }

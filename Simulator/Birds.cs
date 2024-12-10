@@ -23,18 +23,18 @@ public class Birds : Animals
         if (CanFly)
         {
             var nextPosition = Map.Next(Position, direction);
-            Map.Move(this, Position, nextPosition); 
+            Map.Move(this, Position, nextPosition);
             UpdatePosition(nextPosition);
 
-            nextPosition = Map.Next(Position, direction); 
-            Map.Move(this, Position, nextPosition); 
-            UpdatePosition(nextPosition); 
+            nextPosition = Map.Next(Position, direction);
+            Map.Move(this, Position, nextPosition);
+            UpdatePosition(nextPosition);
         }
         else
         {
             var nextPosition = Map.NextDiagonal(Position, direction);
-            Map.Move(this, Position, nextPosition);  
-            UpdatePosition(nextPosition);  
+            Map.Move(this, Position, nextPosition);
+            UpdatePosition(nextPosition);
         }
     }
 }

@@ -60,4 +60,8 @@ public abstract class Creature : IMappable
     {
         return $"{GetType().Name.ToUpper()}: {Info}";
     }
+    public Point CurrentPosition()
+    {
+        return Position; 
+    }
 }

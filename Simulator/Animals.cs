@@ -46,4 +46,8 @@ public class Animals : IMappable
     {
         return $"{GetType().Name.ToUpper()}: {Info}";
     }
+    public Point CurrentPosition()
+    {
+        return Position;
+    }
 }
