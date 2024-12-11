@@ -28,30 +28,31 @@ public class SimulationHistory
     }
 
     public int TotalTurns => _history.Count;
-}
 
-public class SimulationSnapshot
-{
-    public List<IMappable> Mappables { get; }
-    public List<Point> Positions { get; }
-    public string CurrentMove { get; }
-    public IMappable CurrentMappable { get; }
 
-    public SimulationSnapshot(Simulation simulation)
+    public class SimulationSnapshot
     {
-        Mappables = simulation.IMappables.Select(m => m).ToList();
-        Positions = simulation.IMappables.Select(m => m.Position).ToList();
-        CurrentMove = simulation.CurrentMoveName;
-        CurrentMappable = simulation.CurrentMappable;
-    }
+        public List<IMappable> Mappables { get; }
+        public List<Point> Positions { get; }
+        public string CurrentMove { get; }
+        public IMappable CurrentMappable { get; }
 
-    public void DisplaySnapshot()
-    {
-        Console.WriteLine($"Current Turn: {CurrentMappable.Info} moves {CurrentMove}");
-        Console.WriteLine("Map state:");
-        for (int i = 0; i < Mappables.Count; i++)
+        public SimulationSnapshot(Simulation simulation)
         {
-            Console.WriteLine($"{Mappables[i].Symbol} at {Positions[i]}");
+            Mappables = simulation.IMappables.Select(m => m).ToList();
+            Positions = simulation.IMappables.Select(m => m.Position).ToList();
+            CurrentMove = simulation.CurrentMoveName;
+            CurrentMappable = simulation.CurrentMappable;
+        }
+
+        public void DisplaySnapshot()
+        {
+            Console.WriteLine($"Current Turn: {CurrentMappable.Info} moves {CurrentMove}");
+            Console.WriteLine("Map state:");
+            for (int i = 0; i < Mappables.Count; i++)
+            {
+                Console.WriteLine($"{Mappables[i].Symbol} at {Positions[i]}");
+            }
         }
     }
 }

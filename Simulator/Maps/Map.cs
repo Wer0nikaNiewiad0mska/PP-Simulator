@@ -24,6 +24,8 @@ public abstract class Map
     public readonly int SizeY;
 
     private readonly Rectangle _limits;
+    private object _fields;
+
     protected Map(int sizeX, int sizeY)
     {
         if (sizeX < 5)
@@ -63,4 +65,44 @@ public abstract class Map
     /// <param name="d">Direction.</param>
     /// <returns>Next point.</returns>
     public abstract Point NextDiagonal(Point p, Direction d);
+    public override void Add(IMappable mappable, Point p)
+    {
+        if (_fields.TryGetValue(p, out var list))
+        {
+            list.Add(mappable);
+        }
+        else
+        {
+            throw new ArgumentException($"Point {p} is out of bounds or not initialized");
+        }
+    }
+
+    public override void Remove(IMappable mappable, Point p)
+    {
+        if (_fields.TryGetValue(p, out var list))
+        {
+            list.Remove(mappable);
+        }
+        else
+        {
+            throw new ArgumentException($"Point {p} is out of bounds or not initialized");
+        }
+    }
+
+    public override void Move(IMappable mappable, Point from, Point to)
+    {
+        Remove(mappable, from);
+        Add(mappable, to);
+    }
+
+    public override List<IMappable>? At(int x, int y)
+    {
+        var point = new Point(x, y);
+        return At(point);
+    }
+
+    public override List<IMappable>? At(Point p)
+    {
+        return _fields.TryGetValue(p, out var list) ? list : (List<IMappable>?)null;
+    }
 }

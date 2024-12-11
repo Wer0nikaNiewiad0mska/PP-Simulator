@@ -26,34 +26,4 @@ public abstract class SmallMap : Map
             }
         }
     }
-
-    public override void Add(IMappable mappable, Point p)
-    {
-        _fields[p.X, p.Y]?.Add(mappable);
-    }
-
-    public override void Remove(IMappable mappable, Point p)
-    {
-        _fields[p.X, p.Y]?.Remove(mappable);
-    }
-
-    public override void Move(IMappable mappable, Point from, Point to)
-    {
-        Remove(mappable, from);
-        Add(mappable, to);
-    }
-
-    public override List<IMappable>? At(int x, int y)
-    {
-        if (x < 0 || x >= SizeX || y < 0 || y >= SizeY)
-            return null;
-
-        return _fields[x, y];
-    }
-
-    public override List<IMappable>? At(Point p)
-    {
-        return _fields[p.X, p.Y];
-    }
-
 }
