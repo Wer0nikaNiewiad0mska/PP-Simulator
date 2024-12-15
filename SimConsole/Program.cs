@@ -13,8 +13,18 @@ internal class Program
         Console.WriteLine("Starting positions");
 
         BigBounceMap map = new(8, 6);
-        List<IMappable> creatures = [new Orc("Gorbag"), new Elf("Elandor"), new Animals() { Description = "Króliki", Size = 11 }, new Birds() { Description = "Orły", Size = 3 }, new Birds() { Description = "Strusie", CanFly = false }];
-        List<Point> points = [new(2, 2), new(3, 1), new(5, 2), new(6, 0), new(6, 3)];
+        List<IMappable> creatures = new()
+        {
+            new Orc("Gorbag"),
+            new Elf("Elandor"),
+            new Animals() { Description = "Króliki", Size = 11 },
+            new Birds() { Description = "Orły", Size = 3 },
+            new Birds() { Description = "Strusie", CanFly = false }
+        };
+        List<Point> points = new()
+        {
+            new(2, 2), new(3, 1), new(5, 2), new(6, 0), new(6, 3)
+        };
         string moves = "dlrludlldrluuduldurr";
 
         Simulation simulation = new(map, creatures, points, moves);
@@ -22,33 +32,50 @@ internal class Program
         MapVisualizer mapVisualizer = new(simulation.Map);
 
         var turn = 1;
+
+        Console.WriteLine("\n--- Initial State ---");
         mapVisualizer.Draw();
-        history.GetSnapshot(turn).DisplaySnapshot();
-
-
+        DisplayTurnLog(history.TurnLogs.FirstOrDefault());
 
         while (!simulation.Finished)
         {
             Console.ReadKey();
 
-            Console.WriteLine($"Tura {turn}");
-            Console.Write($"{simulation.CurrentMappable.Info} {simulation.CurrentMappable.Position} goes {simulation.CurrentMoveName}\n");
+            Console.WriteLine($"--- Turn {turn} ---");
+            Console.Write($"{simulation.CurrentMappable.Info} at {simulation.CurrentMappable.Position} goes {simulation.CurrentMoveName}\n");
 
-
-
-            Console.WriteLine();
             simulation.Turn();
-            history.AddSnapshot(simulation);
             mapVisualizer.Draw();
-            history.GetSnapshot(turn).DisplaySnapshot();
+            DisplayTurnLog(history.TurnLogs.ElementAtOrDefault(turn));
             turn++;
+
             if (turn > 20) break;
         }
+
+        Console.WriteLine("\n--- Simulation Summary ---");
         for (int i = 5; i <= 20; i += 5)
         {
             Console.WriteLine($"--- Turn {i} ---");
-            history.GetSnapshot(i).DisplaySnapshot();
+            DisplayTurnLog(history.TurnLogs.ElementAtOrDefault(i - 1));
             Console.WriteLine();
+        }
+    }
+
+    private static void DisplayTurnLog(Simulation.SimulationTurnLog? turnLog)
+    {
+        if (turnLog == null)
+        {
+            Console.WriteLine("No data available for this turn.");
+            return;
+        }
+
+        Console.WriteLine($"Mappable: {turnLog.Mappable}");
+        Console.WriteLine($"Move: {turnLog.Move}");
+
+        Console.WriteLine("Map State:");
+        foreach (var entry in turnLog.Symbols)
+        {
+            Console.WriteLine($"Position: {entry.Key} - Symbol: {entry.Value}");
         }
     }
 }

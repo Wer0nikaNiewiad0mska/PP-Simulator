@@ -6,52 +6,50 @@ using System.Threading.Tasks;
 using Simulator;
 using Simulator.Maps;
 using static Simulator.Directions;
+using static Simulator.Simulation;
 
 namespace Simulator;
 
 public class SimulationHistory
 {
-    private readonly List<SimulationSnapshot> _history = new();
+    private readonly Simulation _simulation;
+    public int SizeX { get; }
+    public int SizeY { get; }
+    public List<Simulation.SimulationTurnLog> TurnLogs { get; } = new();
 
-    public void AddSnapshot(Simulation simulation)
+    public SimulationHistory(Simulation simulation)
     {
-        var snapshot = new SimulationSnapshot(simulation);
-        _history.Add(snapshot);
+        _simulation = simulation ?? throw new ArgumentNullException(nameof(simulation));
+        SizeX = _simulation.Map.SizeX;
+        SizeY = _simulation.Map.SizeY;
+        Run();
     }
 
-    public SimulationSnapshot GetSnapshot(int turn)
+    private void Run()
     {
-        if (turn < 1 || turn > _history.Count)
-            throw new ArgumentOutOfRangeException(nameof(turn), "Invalid turn number.");
+        LogTurn();
 
-        return _history[turn - 1];
-    }
-
-    public int TotalTurns => _history.Count;
-}
-
-public class SimulationSnapshot
-{
-    public List<IMappable> Mappables { get; }
-    public List<Point> Positions { get; }
-    public string CurrentMove { get; }
-    public IMappable CurrentMappable { get; }
-
-    public SimulationSnapshot(Simulation simulation)
-    {
-        Mappables = simulation.IMappables.Select(m => m).ToList();
-        Positions = simulation.IMappables.Select(m => m.Position).ToList();
-        CurrentMove = simulation.CurrentMoveName;
-        CurrentMappable = simulation.CurrentMappable;
-    }
-
-    public void DisplaySnapshot()
-    {
-        Console.WriteLine($"Current Turn: {CurrentMappable.Info} moves {CurrentMove}");
-        Console.WriteLine("Map state:");
-        for (int i = 0; i < Mappables.Count; i++)
+        while (!_simulation.Finished)
         {
-            Console.WriteLine($"{Mappables[i].Symbol} at {Positions[i]}");
+            _simulation.Turn();
+            LogTurn();
         }
+    }
+
+    private void LogTurn()
+    {
+        var symbols = new Dictionary<Point, char>();
+
+        foreach (var mappable in _simulation.IMappables)
+        {
+            symbols[mappable.Position] = mappable.Symbol;
+        }
+
+        TurnLogs.Add(new Simulation.SimulationTurnLog
+        {
+            Mappable = _simulation.CurrentMappable.ToString(),
+            Move = _simulation.CurrentMoveName,
+            Symbols = symbols
+        });
     }
 }
