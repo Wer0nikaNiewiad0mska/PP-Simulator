@@ -29,12 +29,13 @@ internal class Program
 
         Simulation simulation = new(map, creatures, points, moves);
         SimulationHistory history = simulation.History;
-        MapVisualizer mapVisualizer = new(simulation.Map);
+
+        LogVisualizer logVisualizer = new(history);
 
         var turn = 1;
 
         Console.WriteLine("\n--- Initial State ---");
-        mapVisualizer.Draw();
+        logVisualizer.Draw(0); 
         DisplayTurnLog(history.TurnLogs.FirstOrDefault());
 
         while (!simulation.Finished)
@@ -45,7 +46,7 @@ internal class Program
             Console.Write($"{simulation.CurrentMappable.Info} at {simulation.CurrentMappable.Position} goes {simulation.CurrentMoveName}\n");
 
             simulation.Turn();
-            mapVisualizer.Draw();
+            logVisualizer.Draw(turn);
             DisplayTurnLog(history.TurnLogs.ElementAtOrDefault(turn));
             turn++;
 
@@ -61,7 +62,7 @@ internal class Program
         }
     }
 
-    private static void DisplayTurnLog(Simulation.SimulationTurnLog? turnLog)
+    private static void DisplayTurnLog(SimulationTurnLog? turnLog)
     {
         if (turnLog == null)
         {

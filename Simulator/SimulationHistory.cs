@@ -15,7 +15,7 @@ public class SimulationHistory
     private readonly Simulation _simulation;
     public int SizeX { get; }
     public int SizeY { get; }
-    public List<Simulation.SimulationTurnLog> TurnLogs { get; } = new();
+    public List<SimulationTurnLog> TurnLogs { get; } = new();
 
     public SimulationHistory(Simulation simulation)
     {
@@ -45,7 +45,7 @@ public class SimulationHistory
             symbols[mappable.Position] = mappable.Symbol;
         }
 
-        TurnLogs.Add(new Simulation.SimulationTurnLog
+        TurnLogs.Add(new SimulationTurnLog
         {
             Mappable = _simulation.CurrentMappable.ToString(),
             Move = _simulation.CurrentMoveName,
