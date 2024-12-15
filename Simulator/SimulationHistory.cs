@@ -11,23 +11,47 @@ namespace Simulator;
 
 public class SimulationHistory
 {
-    private Simulation _simulation { get; }
-    public int SizeX { get; }
-    public int SizeY { get; }
-    public List<SimulationTurnLog> TurnLogs { get; } = [];
-    // store starting positions at index 0
+    private readonly List<SimulationSnapshot> _history = new();
 
-    public SimulationHistory(Simulation simulation)
+    public void AddSnapshot(Simulation simulation)
     {
-        _simulation = simulation ??
-            throw new ArgumentNullException(nameof(simulation));
-        SizeX = _simulation.Map.SizeX;
-        SizeY = _simulation.Map.SizeY;
-        Run();
+        var snapshot = new SimulationSnapshot(simulation);
+        _history.Add(snapshot);
     }
 
-    private void Run()
+    public SimulationSnapshot GetSnapshot(int turn)
     {
-        // implement
+        if (turn < 1 || turn > _history.Count)
+            throw new ArgumentOutOfRangeException(nameof(turn), "Invalid turn number.");
+
+        return _history[turn - 1];
+    }
+
+    public int TotalTurns => _history.Count;
+}
+
+public class SimulationSnapshot
+{
+    public List<IMappable> Mappables { get; }
+    public List<Point> Positions { get; }
+    public string CurrentMove { get; }
+    public IMappable CurrentMappable { get; }
+
+    public SimulationSnapshot(Simulation simulation)
+    {
+        Mappables = simulation.IMappables.Select(m => m).ToList();
+        Positions = simulation.IMappables.Select(m => m.Position).ToList();
+        CurrentMove = simulation.CurrentMoveName;
+        CurrentMappable = simulation.CurrentMappable;
+    }
+
+    public void DisplaySnapshot()
+    {
+        Console.WriteLine($"Current Turn: {CurrentMappable.Info} moves {CurrentMove}");
+        Console.WriteLine("Map state:");
+        for (int i = 0; i < Mappables.Count; i++)
+        {
+            Console.WriteLine($"{Mappables[i].Symbol} at {Positions[i]}");
+        }
     }
 }
