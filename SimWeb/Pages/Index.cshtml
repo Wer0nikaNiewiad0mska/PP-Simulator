@@ -1,0 +1,41 @@
+﻿@page
+@using Simulator
+@using Simulator.Maps
+@model IndexModel
+@{
+    ViewData["Title"] = "Symulacja";
+}
+
+<h2 class="text-center">Tura @Model.CurrentTurn</h2>
+
+<form method="post" class="text-center">
+    <button name="action" value="previous">←</button>
+    <button name="action" value="next">→</button>
+</form>
+
+<table style="margin: 20px auto; border-collapse: collapse;">
+    @for (int y = 0; y < Model.GridHeight; y++)
+    {
+        <tr>
+            @for (int x = 0; x < Model.GridWidth; x++)
+            {
+                var symbol = Model.GetSymbolAt(x, y);
+                <td style="border: 1px solid black; width: 40px; height: 40px; text-align: center;">
+                    @if (!string.IsNullOrEmpty(symbol))
+                    {
+                        <img src="@symbol" alt="Mappable" width="30" height="30" />
+                    }
+                </td>
+            }
+        </tr>
+    }
+</table
+
+@if (Model.CurrentTurnLog != null)
+{
+    <p class="text-center">
+        <strong>@Model.CurrentTurnLog.Mappable</strong> at
+        <strong>(@Model.CurrentPosition.X, @Model.CurrentPosition.Y)</strong>
+        ⇒ @Model.CurrentTurnLog.Move
+    </p>
+}

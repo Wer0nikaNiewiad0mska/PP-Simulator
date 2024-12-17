@@ -1,0 +1,40 @@
+﻿<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - SimWeb Simulation</title>
+    <link rel="stylesheet" href="~/css/site.css"
+          asp-append-version="true" />
+    <script src="~/js/site.js"></script>
+</head>
+<body>
+    <!-- HEADER -->
+    <header style="background-color: pink; padding: 30px 0; display: flex; justify-content: space-between; align-items: center;">
+        <div style="margin-left: 20px; font-size: 24px; font-weight: bold; color: black;">
+            SimWeb
+        </div>
+        <nav>
+            <a href="/Info" style="text-decoration: none; color: black; font-weight: bold; font-size: 20px; margin-right: 30px; padding: 5px 15px; border: 2px solid black; border-radius: 5px; display: inline-block;">
+                Informacje
+            </a>
+            <a href="/Index" style="text-decoration: none; color: black; font-weight: bold; font-size: 20px; padding: 5px 15px; border: 2px solid black; border-radius: 5px; display: inline-block;">
+                Symulacja
+            </a>
+        </nav>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <div class="content" style="padding: 40px 20px; text-align: center;">
+        @RenderBody()
+    </div>
+
+    <!-- FOOTER -->
+    <footer style="background-color: pink; padding: 10px; text-align: center; position: fixed; bottom: 0; width: 100%;">
+        <p style="margin: 0;">&copy; 2024 SimWeb - Weronika Niewiadomska</p>
+    </footer>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>
