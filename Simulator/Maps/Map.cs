@@ -18,6 +18,10 @@ public abstract class Map
     private readonly Rectangle _limits;
     private readonly Dictionary<Point, List<IMappable>> _fields;
 
+    protected Func<Map, Point, Direction, Point>? FNext {  get; set; }
+    protected Func<Map, Point, Direction, Point>? FNextDiagonal {  get; set; }
+
+
     protected Map(int sizeX, int sizeY)
     {
         if (sizeX < 5)
@@ -96,10 +100,10 @@ public abstract class Map
     /// <summary>
     /// Get the next position to the given point in a given direction.
     /// </summary>
-    public abstract Point Next(Point p, Direction d);
+    public Point Next(Point p, Direction d) => FNext?.Invoke(this, p, d) ?? p;
 
     /// <summary>
     /// Get the next diagonal position to the given point in a direction rotated 45 degrees.
     /// </summary>
-    public abstract Point NextDiagonal(Point p, Direction d);
+    public Point NextDiagonal(Point p, Direction d) => FNextDiagonal?.Invoke(this, p, d) ?? p;
 }
